@@ -2,9 +2,9 @@
 
 function printReceipt(collection) {
   const calculateItemCount = calculateItem(collection);
-  const shoppingDetails = addShoppingDetails(calculateItemCount, loadAllItems());
-  alterShoppingDetails(shoppingDetails, loadPromotions());
-  let str = generateReceipt(shoppingDetails);
+  const itemDetails = findItemDetail(calculateItemCount, loadAllItems());
+  getItemDetailLittlePriceSum(itemDetails, loadPromotions());
+  let str = print(itemDetails);
   console.log(str);
 }
 
@@ -36,17 +36,16 @@ function calculateItem(tags){
   for(let n in itemCount) {
     calculateItemCount.push({"barcode": n, "count": itemCount[n]});
   }
-  //console.log(calculateItemCount);
   return calculateItemCount;
 }
 
-//购物详细信息包括小计
-function addShoppingDetails(calculateItemCount, allItems) {
-  const shoppingDetails=[];
+//商品详细信息包括小计
+function findItemDetail(calculateItemCount, allItems) {
+  const itemDetails=[];
   for(let item of calculateItemCount){
     for(let i=0;i<allItems.length;i++){
       if(item.barcode === allItems[i].barcode){
-        shoppingDetails.push({
+        itemDetails.push({
           "barcode":allItems[i].barcode,
 		  "name":allItems[i].name,
           "count":item.count,
@@ -54,54 +53,45 @@ function addShoppingDetails(calculateItemCount, allItems) {
           "unit":allItems[i].unit,
           "sum":item.count*parseFloat(allItems[i].price)
        });
+       //break;
       }
     }
   }
-  //console.log(shoppingDetails);
-  return shoppingDetails;
+  return itemDetails;
 }
 
-//进行促销活动
-function alterShoppingDetails(shoppingDetails, buyTweGetOneFree){
+//促销活动
+function getItemDetailLittlePriceSum(itemDetails, buyTweGetOneFree){
   const barcodes=buyTweGetOneFree[0].barcodes;
-  for (let i=0;i<barcodes.length;i++){
-    for (let j=0;j<shoppingDetails.length;j++){
-      if (shoppingDetails[j].barcode === barcodes[i]){
-        if (shoppingDetails[j].count>=2){
-        	shoppingDetails[j].free=shoppingDetails[j].price;
-          shoppingDetails[j].sum-=shoppingDetails[j].free;
+  let free=[];
+  for (let i=0;i<itemDetails.length;i++){
+    for (let j=0;j<barcodes.length;j++){
+      if (itemDetails[i].barcode === barcodes[j]){
+        if (itemDetails[i].count/2>0){
+          free[i]=itemDetails[i].price;
+          itemDetails[i].sum-=free[i];
         }
+        else free[i]=0;
       }
-	  else shoppingDetails[i].free=0;
+	  else free[i]=0;
     }
+	itemDetails.push({"free":free[i]});
   }
-  //console.log(shoppingDetails);
-  return shoppingDetails;
+  return itemDetails;
 }
 
 //结果
-function generateReceipt(shoppingDetails) {
-	 /*`***<没钱赚商店>收据***
-	名称：雪碧，数量：5瓶，单价：3.00(元)，小计：12.00(元)
-	名称：荔枝，数量：2.5斤，单价：15.00(元)，小计：37.50(元)
-	名称：方便面，数量：3袋，单价：4.50(元)，小计：9.00(元)
-	----------------------
-	总计：58.50(元)
-	节省：7.50(元)
-	**********************`*/
-  let total=0;
-  let save=0;
-  let goods=[];
-  for (let item of shoppingDetails) {
-    total+=parseFloat(item.sum);
-	save+=item.free;
-	goods +=`\n名称：${item.name}，数量：${item.count}${item.unit}，单价：${item.price.toFixed(2)}(元)，小计：${item.sum.toFixed(2)}(元)`;
+function print(itemDetails) {
+  let str = "***<没钱赚商店>收据***\n";
+  // "名称：雪碧，数量：5瓶，单价：3.00(元)，小计：12.00(元)\n名称：荔枝，数量：2.5斤，单价：15.00(元)，小计：37.50(元)\n名称：方便面，数量：3袋，单价：4.50(元)，小计：9.00(元)\n----------------------\n总计：58.50(元)\n节省：7.50(元)\n**********************"
+  for (let item of itemDetails) {
+    let price = item.price.toFixed(2);
+    let sum = item.sum.toFixed(2);
+    str += "名称：" + item.name + "，数量：" + item.count + item.unit + "，单价：" + price + "(元)，小计：" + sum + "(元)\n";
+	let total+=sum;
+	let save+=item.free.toFixed(2);
   }
-	let str = `***<没钱赚商店>收据***${goods}
-----------------------
-总计：${total.toFixed(2)}(元)
-节省：${save.toFixed(2)}(元)
-**********************`;
+  str += "----------------------\n总计：" + total.toFixed(2) + "(元)\n节省：" + save.toFixed(2) + "(元)\n**********************";
   return str;
-  //console.log(total);
 }
+
