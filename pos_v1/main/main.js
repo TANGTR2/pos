@@ -96,4 +96,3 @@ function print(shoppingDetails) {
   return str;
   console.log(total);
 }
-
