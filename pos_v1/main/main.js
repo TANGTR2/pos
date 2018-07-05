@@ -4,7 +4,7 @@ function printReceipt(collection) {
   const calculateItemCount = calculateItem(collection);
   const shoppingDetails = addShoppingDetails(calculateItemCount, loadAllItems());
   alterShoppingDetails(shoppingDetails, loadPromotions());
-  let str = print(shoppingDetails);
+  let str = generateReceipt(shoppingDetails);
   console.log(str);
 }
 
@@ -36,7 +36,7 @@ function calculateItem(tags){
   for(let n in itemCount) {
     calculateItemCount.push({"barcode": n, "count": itemCount[n]});
   }
-  console.log(calculateItemCount);
+  //console.log(calculateItemCount);
   return calculateItemCount;
 }
 
@@ -57,11 +57,11 @@ function addShoppingDetails(calculateItemCount, allItems) {
       }
     }
   }
-  console.log(shoppingDetails);
+  //console.log(shoppingDetails);
   return shoppingDetails;
 }
 
-//促销活动
+//进行促销活动
 function alterShoppingDetails(shoppingDetails, buyTweGetOneFree){
   const barcodes=buyTweGetOneFree[0].barcodes;
   for (let i=0;i<barcodes.length;i++){
@@ -75,12 +75,12 @@ function alterShoppingDetails(shoppingDetails, buyTweGetOneFree){
 	  else shoppingDetails[i].free=0;
     }
   }
-  console.log(shoppingDetails);
+  //console.log(shoppingDetails);
   return shoppingDetails;
 }
 
 //结果
-function print(shoppingDetails) {
+function generateReceipt(shoppingDetails) {
   let str = "***<没钱赚商店>收据***\n";
   // "名称：雪碧，数量：5瓶，单价：3.00(元)，小计：12.00(元)\n名称：荔枝，数量：2.5斤，单价：15.00(元)，小计：37.50(元)\n名称：方便面，数量：3袋，单价：4.50(元)，小计：9.00(元)\n----------------------\n总计：58.50(元)\n节省：7.50(元)\n**********************"
   let total=0;
@@ -94,5 +94,5 @@ function print(shoppingDetails) {
   }
   str += "----------------------\n总计：" + total.toFixed(2) + "(元)\n节省：" + save.toFixed(2) + "(元)\n**********************";
   return str;
-  console.log(total);
+  //console.log(total);
 }
