@@ -81,18 +81,27 @@ function alterShoppingDetails(shoppingDetails, buyTweGetOneFree){
 
 //结果
 function generateReceipt(shoppingDetails) {
-  let str = "***<没钱赚商店>收据***\n";
-  // "名称：雪碧，数量：5瓶，单价：3.00(元)，小计：12.00(元)\n名称：荔枝，数量：2.5斤，单价：15.00(元)，小计：37.50(元)\n名称：方便面，数量：3袋，单价：4.50(元)，小计：9.00(元)\n----------------------\n总计：58.50(元)\n节省：7.50(元)\n**********************"
+	 /*`***<没钱赚商店>收据***
+	名称：雪碧，数量：5瓶，单价：3.00(元)，小计：12.00(元)
+	名称：荔枝，数量：2.5斤，单价：15.00(元)，小计：37.50(元)
+	名称：方便面，数量：3袋，单价：4.50(元)，小计：9.00(元)
+	----------------------
+	总计：58.50(元)
+	节省：7.50(元)
+	**********************`*/
   let total=0;
   let save=0;
+  let goods=[];
   for (let item of shoppingDetails) {
-    let price = item.price.toFixed(2);
-    let sum = item.sum.toFixed(2);
     total+=parseFloat(item.sum);
 	save+=item.free;
-    str += "名称：" + item.name + "，数量：" + item.count + item.unit + "，单价：" + price + "(元)，小计：" + sum + "(元)\n";
+	goods +=`\n名称：${item.name}，数量：${item.count}${item.unit}，单价：${item.price.toFixed(2)}(元)，小计：${item.sum.toFixed(2)}(元)`;
   }
-  str += "----------------------\n总计：" + total.toFixed(2) + "(元)\n节省：" + save.toFixed(2) + "(元)\n**********************";
+	let str = `***<没钱赚商店>收据***${goods}
+----------------------
+总计：${total.toFixed(2)}(元)
+节省：${save.toFixed(2)}(元)
+**********************`;
   return str;
   //console.log(total);
 }
