@@ -79,3 +79,28 @@ describe('Unit Test',()=> {
 	});
 });
 
+describe('Unit Test',()=> {
+	it('Unit test of alterShoppingDetails()', () => {
+		//given
+		const tags = [
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000003-2.5',
+		      'ITEM000005',
+		      'ITEM000005-2',
+		    ];
+		const calculateItemCount = calculateItem(tags);
+		const shoppingDetails = addShoppingDetails(calculateItemCount, loadAllItems());
+		//when
+		const alterShoppingDetail = alterShoppingDetails(shoppingDetails, loadPromotions());
+		//then
+		let result=JSON.stringify([
+			{"barcode":"ITEM000001","name":"雪碧","count":5,"price":3,"unit":"瓶","sum":12,"free":3},
+			{"barcode":"ITEM000003","name":"荔枝","count":2.5,"price":15,"unit":"斤","sum":37.5,"free":0},
+			{"barcode":"ITEM000005","name":"方便面","count":3,"price":4.5,"unit":"袋","sum":9,"free":4.5}]);
+		expect(JSON.stringify(alterShoppingDetail)).toBe(result);   
+	});
+});
