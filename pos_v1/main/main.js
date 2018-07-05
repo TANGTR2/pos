@@ -3,7 +3,7 @@
 function printReceipt(collection) {
   const calculateItemCount = calculateItem(collection);
   const shoppingDetails = addShoppingDetails(calculateItemCount, loadAllItems());
-  getItemDetailLittlePriceSum(shoppingDetails, loadPromotions());
+  alterShoppingDetails(shoppingDetails, loadPromotions());
   let str = print(shoppingDetails);
   console.log(str);
 }
@@ -62,7 +62,7 @@ function addShoppingDetails(calculateItemCount, allItems) {
 }
 
 //促销活动
-function getItemDetailLittlePriceSum(shoppingDetails, buyTweGetOneFree){
+function alterShoppingDetails(shoppingDetails, buyTweGetOneFree){
   const barcodes=buyTweGetOneFree[0].barcodes;
   for (let i=0;i<barcodes.length;i++){
     for (let j=0;j<shoppingDetails.length;j++){
