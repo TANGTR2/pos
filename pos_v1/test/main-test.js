@@ -2,7 +2,7 @@
 
 describe('pos', () => {
 
-  it('should print text', () => {
+  it('should print text result test', () => {
 
     const tags = [
       'ITEM000001',

@@ -18,16 +18,16 @@ function calculateItem(tags){
       let div=tags[i].split("-");//分割字符串为数组
       if(itemCount.hasOwnProperty(div[0])){
         itemCount[div[0]]=itemCount[div[0]]+parseFloat(div[1]);
-      } 
+      }
 	  else{
         itemCount[div[0]]=parseFloat(div[1]);
       }
-    } 
+    }
 	//不包含-的情况
 	else{
       if(itemCount.hasOwnProperty(tags[i])){
         itemCount[tags[i]]=itemCount[tags[i]]+1;
-      } 
+      }
 	  else{
         itemCount[tags[i]]=1;
      }
@@ -92,6 +92,7 @@ function generateReceipt(shoppingDetails) {
   let total=0;
   let save=0;
   let goods=[];
+  
   for (let item of shoppingDetails) {
     total+=parseFloat(item.sum);
 	save+=item.free;
