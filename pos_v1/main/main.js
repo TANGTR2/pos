@@ -106,3 +106,4 @@ function generateReceipt(shoppingDetails) {
   return str;
   //console.log(total);
 }
+
