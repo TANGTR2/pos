@@ -87,7 +87,7 @@ describe('Unit Test',()=> {
 });
 
 describe('Unit Test',()=> {
-	it('Unit test of addShoppingDetails()', () => {
+	it('Unit test of addShoppingDetailsWithSubsum()', () => {
 		//given
 		const tags = [
 		      'ITEM000001',
@@ -102,7 +102,7 @@ describe('Unit Test',()=> {
 		const splitBarcodeAndAmounts = bulidSplitBarcodeAndAmount(tags);
 		const calculateItemCounts = bulidCalculateItemsCount(splitBarcodeAndAmounts);
 		//when
-		const shoppingDetails = addShoppingDetails(calculateItemCounts, loadAllItems());
+		const shoppingDetails = addShoppingDetailsWithSubsum(calculateItemCounts, loadAllItems());
 		//then
 		let result=JSON.stringify([{"barcode":"ITEM000001","name":"雪碧","count":5,"price":3,"unit":"瓶","sum":15},
 			{"barcode":"ITEM000003","name":"荔枝","count":2.5,"price":15,"unit":"斤","sum":37.5},
@@ -126,7 +126,7 @@ describe('Unit Test',()=> {
 		    ];
 		const splitBarcodeAndAmounts = bulidSplitBarcodeAndAmount(tags);
 		const calculateItemCounts = bulidCalculateItemsCount(splitBarcodeAndAmounts);
-		const shoppingDetails = addShoppingDetails(calculateItemCounts, loadAllItems());
+		const shoppingDetails = addShoppingDetailsWithSubsum(calculateItemCounts, loadAllItems());
 		//when
 		const aftershoppingDetails = alterShoppingDetails(shoppingDetails, loadPromotions());
 		//then

@@ -3,7 +3,7 @@
 function printReceipt(collection) {
   const splitBarcodeAndAmounts=bulidSplitBarcodeAndAmount(collection);
   const calculateItemCounts = bulidCalculateItemsCount(splitBarcodeAndAmounts);
-  const shoppingDetails = addShoppingDetails(calculateItemCounts, loadAllItems());
+  const shoppingDetails = addShoppingDetailsWithSubsum(calculateItemCounts, loadAllItems());
   const aftershoppingDetails = alterShoppingDetails(shoppingDetails, loadPromotions());
   let str = generateReceipt(aftershoppingDetails);
   console.log(str);
@@ -47,7 +47,7 @@ function bulidCalculateItemsCount(splitBarcodeAndAmounts){
 }
 
 //购物详细信息包括小计
-function addShoppingDetails(calculateItemCounts, allItems) {
+function addShoppingDetailsWithSubsum(calculateItemCounts, allItems) {
   const shoppingDetails=[];
   for(let item of calculateItemCounts){
     for(let i=0;i<allItems.length;i++){
