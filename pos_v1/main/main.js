@@ -1,4 +1,19 @@
+// Write your cade below:
+// function caclRemaindar() {};
+
+// function caclSum() {};
+
+// function caclSumInConditon() {};
+
+// module.exports = {
+//     caclRemaindar,
+//     caclSum,
+//     caclSumInConditon
+// }
+
 'use strict';
+
+const {loadAllItems,loadPromotions} = require('../main/fixtures')
 
 function printReceipt(collection) {
   const splitBarcodeAndAmounts=bulidSplitBarcodeAndAmount(collection);
@@ -64,7 +79,7 @@ function addShoppingDetailsWithSubsum(calculateItemCounts, allItems) {
       }
     }
   }
-  console.log(shoppingDetails);
+  //console.log(shoppingDetails);
   return shoppingDetails;
 }
 
@@ -120,3 +135,11 @@ function generateReceipt(aftershoppingDetails,prices) {
   return str;
 }
 
+module.exports={
+    bulidSplitBarcodeAndAmount,
+	bulidCalculateItemsCount,
+	addShoppingDetailsWithSubsum,
+	alterShoppingDetails,
+	calculatePrice,
+    generateReceipt,
+    printReceipt}
