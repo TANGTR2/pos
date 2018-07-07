@@ -4,8 +4,8 @@ function printReceipt(collection) {
   const splitBarcodeAndAmounts=bulidSplitBarcodeAndAmount(collection);
   const calculateItemCounts = bulidCalculateItemsCount(splitBarcodeAndAmounts);
   const shoppingDetails = addShoppingDetails(calculateItemCounts, loadAllItems());
-  alterShoppingDetails(shoppingDetails, loadPromotions());
-  let str = generateReceipt(shoppingDetails);
+  const aftershoppingDetails = alterShoppingDetails(shoppingDetails, loadPromotions());
+  let str = generateReceipt(aftershoppingDetails);
   console.log(str);
 }
 
@@ -47,9 +47,9 @@ function bulidCalculateItemsCount(splitBarcodeAndAmounts){
 }
 
 //购物详细信息包括小计
-function addShoppingDetails(calculateItemCount, allItems) {
+function addShoppingDetails(calculateItemCounts, allItems) {
   const shoppingDetails=[];
-  for(let item of calculateItemCount){
+  for(let item of calculateItemCounts){
     for(let i=0;i<allItems.length;i++){
       if(item.barcode === allItems[i].barcode){
         shoppingDetails.push({
@@ -69,20 +69,21 @@ function addShoppingDetails(calculateItemCount, allItems) {
 
 //进行促销活动
 function alterShoppingDetails(shoppingDetails, buyTweGetOneFree){
+  const aftershoppingDetails=shoppingDetails;
   const barcodes=buyTweGetOneFree[0].barcodes;
   for (let i=0;i<barcodes.length;i++){
     for (let j=0;j<shoppingDetails.length;j++){
       if (shoppingDetails[j].barcode === barcodes[i]){
         if (shoppingDetails[j].count>=2){
-        	shoppingDetails[j].free=shoppingDetails[j].price;
-          shoppingDetails[j].sum-=shoppingDetails[j].free;
+        	aftershoppingDetails[j].free=shoppingDetails[j].price;
+          aftershoppingDetails[j].sum-=shoppingDetails[j].free;
         }
       }
-	  else shoppingDetails[i].free=0;
+	  else aftershoppingDetails[i].free=0;
     }
   }
-  //console.log(shoppingDetails);
-  return shoppingDetails;
+  //console.log(aftershoppingDetails);
+  return aftershoppingDetails;
 }
 
 //结果

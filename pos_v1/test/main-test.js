@@ -78,62 +78,65 @@ describe('Unit Test',()=> {
 		//when
 		const calculateItemCounts = bulidCalculateItemsCount(splitBarcodeAndAmounts);
 		//then
-		let result=JSON.stringify([{"barcode":"ITEM000001","count":5},
+		let result=JSON.stringify([
+			{"barcode":"ITEM000001","count":5},
 			{"barcode":"ITEM000003","count":2.5},
 			{"barcode":"ITEM000005","count":3}]);
 		expect(JSON.stringify(calculateItemCounts)).toBe(result);   
 	});
 });
 
-// describe('Unit Test',()=> {
-// 	it('Unit test of addShoppingDetails()', () => {
-// 		//given
-// 		const tags = [
-// 		      'ITEM000001',
-// 		      'ITEM000001',
-// 		      'ITEM000001',
-// 		      'ITEM000001',
-// 		      'ITEM000001',
-// 		      'ITEM000003-2.5',
-// 		      'ITEM000005',
-// 		      'ITEM000005-2',
-// 		    ];
-// 		const calculateItemCount = calculateItem(tags);
-// 		//when
-// 		const shoppingDetails = addShoppingDetails(calculateItemCount, loadAllItems());;
-// 		//then
-// 		let result=JSON.stringify([{"barcode":"ITEM000001","name":"雪碧","count":5,"price":3,"unit":"瓶","sum":15},
-// 			{"barcode":"ITEM000003","name":"荔枝","count":2.5,"price":15,"unit":"斤","sum":37.5},
-// 			{"barcode":"ITEM000005","name":"方便面","count":3,"price":4.5,"unit":"袋","sum":13.5}]);
-// 		expect(JSON.stringify(shoppingDetails)).toBe(result);   
-// 	});
-// });
+describe('Unit Test',()=> {
+	it('Unit test of addShoppingDetails()', () => {
+		//given
+		const tags = [
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000003-2.5',
+		      'ITEM000005',
+		      'ITEM000005-2',
+			];
+		const splitBarcodeAndAmounts = bulidSplitBarcodeAndAmount(tags);
+		const calculateItemCounts = bulidCalculateItemsCount(splitBarcodeAndAmounts);
+		//when
+		const shoppingDetails = addShoppingDetails(calculateItemCounts, loadAllItems());
+		//then
+		let result=JSON.stringify([{"barcode":"ITEM000001","name":"雪碧","count":5,"price":3,"unit":"瓶","sum":15},
+			{"barcode":"ITEM000003","name":"荔枝","count":2.5,"price":15,"unit":"斤","sum":37.5},
+			{"barcode":"ITEM000005","name":"方便面","count":3,"price":4.5,"unit":"袋","sum":13.5}]);
+		expect(JSON.stringify(shoppingDetails)).toBe(result);   
+	});
+});
 
-// describe('Unit Test',()=> {
-// 	it('Unit test of alterShoppingDetails()', () => {
-// 		//given
-// 		const tags = [
-// 		      'ITEM000001',
-// 		      'ITEM000001',
-// 		      'ITEM000001',
-// 		      'ITEM000001',
-// 		      'ITEM000001',
-// 		      'ITEM000003-2.5',
-// 		      'ITEM000005',
-// 		      'ITEM000005-2',
-// 		    ];
-// 		const calculateItemCount = calculateItem(tags);
-// 		const shoppingDetails = addShoppingDetails(calculateItemCount, loadAllItems());
-// 		//when
-// 		const alterShoppingDetail = alterShoppingDetails(shoppingDetails, loadPromotions());
-// 		//then
-// 		let result=JSON.stringify([
-// 			{"barcode":"ITEM000001","name":"雪碧","count":5,"price":3,"unit":"瓶","sum":12,"free":3},
-// 			{"barcode":"ITEM000003","name":"荔枝","count":2.5,"price":15,"unit":"斤","sum":37.5,"free":0},
-// 			{"barcode":"ITEM000005","name":"方便面","count":3,"price":4.5,"unit":"袋","sum":9,"free":4.5}]);
-// 		expect(JSON.stringify(alterShoppingDetail)).toBe(result);   
-// 	});
-// });
+describe('Unit Test',()=> {
+	it('Unit test of alterShoppingDetails()', () => {
+		//given
+		const tags = [
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000003-2.5',
+		      'ITEM000005',
+		      'ITEM000005-2',
+		    ];
+		const splitBarcodeAndAmounts = bulidSplitBarcodeAndAmount(tags);
+		const calculateItemCounts = bulidCalculateItemsCount(splitBarcodeAndAmounts);
+		const shoppingDetails = addShoppingDetails(calculateItemCounts, loadAllItems());
+		//when
+		const aftershoppingDetails = alterShoppingDetails(shoppingDetails, loadPromotions());
+		//then
+		let result=JSON.stringify([
+			{"barcode":"ITEM000001","name":"雪碧","count":5,"price":3,"unit":"瓶","sum":12,"free":3},
+			{"barcode":"ITEM000003","name":"荔枝","count":2.5,"price":15,"unit":"斤","sum":37.5,"free":0},
+			{"barcode":"ITEM000005","name":"方便面","count":3,"price":4.5,"unit":"袋","sum":9,"free":4.5}]);
+		expect(JSON.stringify(aftershoppingDetails)).toBe(result);   
+	});
+});
 
 // describe('Unit Test',()=> {
 // 	it('Unit test of generateReceipt()', () => {
