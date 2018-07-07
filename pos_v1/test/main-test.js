@@ -138,6 +138,31 @@ describe('Unit Test',()=> {
 	});
 });
 
+describe('Unit Test',()=> {
+	it('Unit test of calculatePrice()', () => {
+		//given
+		const tags = [
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000001',
+		      'ITEM000003-2.5',
+		      'ITEM000005',
+		      'ITEM000005-2',
+		    ];
+		const splitBarcodeAndAmounts = bulidSplitBarcodeAndAmount(tags);
+		const calculateItemCounts = bulidCalculateItemsCount(splitBarcodeAndAmounts);
+		const shoppingDetails = addShoppingDetailsWithSubsum(calculateItemCounts, loadAllItems());
+		const aftershoppingDetails = alterShoppingDetails(shoppingDetails, loadPromotions());
+		//when
+		const prices = calculatePrice(aftershoppingDetails);
+		//then
+		let result=JSON.stringify({"total":58.5,"save":7.5});
+		expect(JSON.stringify(prices)).toBe(result);   
+	});
+});
+
 // describe('Unit Test',()=> {
 // 	it('Unit test of generateReceipt()', () => {
 // 		//given

@@ -5,6 +5,7 @@ function printReceipt(collection) {
   const calculateItemCounts = bulidCalculateItemsCount(splitBarcodeAndAmounts);
   const shoppingDetails = addShoppingDetailsWithSubsum(calculateItemCounts, loadAllItems());
   const aftershoppingDetails = alterShoppingDetails(shoppingDetails, loadPromotions());
+  const total = calculatePrice(aftershoppingDetails).total;
   let str = generateReceipt(aftershoppingDetails);
   console.log(str);
 }
@@ -86,8 +87,19 @@ function alterShoppingDetails(shoppingDetails, buyTweGetOneFree){
   return aftershoppingDetails;
 }
 
+function calculatePrice(aftershoppingDetails){
+  let prices = {};
+  prices.total=0;
+  prices.save=0;
+  for(let item of aftershoppingDetails){
+    prices.total += parseFloat(item.sum);
+    prices.save += parseFloat(item.free);
+  }
+  return prices;
+}
+
 //结果
-function generateReceipt(shoppingDetails) {
+function generateReceipt(aftershoppingDetails) {
 	 /*`***<没钱赚商店>收据***
 	名称：雪碧，数量：5瓶，单价：3.00(元)，小计：12.00(元)
 	名称：荔枝，数量：2.5斤，单价：15.00(元)，小计：37.50(元)
@@ -100,10 +112,10 @@ function generateReceipt(shoppingDetails) {
   let save=0;
   let goods=[];
   
-  for (let item of shoppingDetails) {
+  for (let item of aftershoppingDetails) {
     total+=parseFloat(item.sum);
-	save+=item.free;
-	goods +=`\n名称：${item.name}，数量：${item.count}${item.unit}，单价：${item.price.toFixed(2)}(元)，小计：${item.sum.toFixed(2)}(元)`;
+    save+=item.free;    
+    goods +=`\n名称：${item.name}，数量：${item.count}${item.unit}，单价：${item.price.toFixed(2)}(元)，小计：${item.sum.toFixed(2)}(元)`;
   }
 	let str = `***<没钱赚商店>收据***${goods}
 ----------------------
