@@ -1,43 +1,49 @@
 'use strict';
 
 function printReceipt(collection) {
-  const calculateItemCount = calculateItem(collection);
-  const shoppingDetails = addShoppingDetails(calculateItemCount, loadAllItems());
+  const splitBarcodeAndAmounts=bulidSplitBarcodeAndAmount(collection);
+  const calculateItemCounts = bulidCalculateItemsCount(splitBarcodeAndAmounts);
+  const shoppingDetails = addShoppingDetails(calculateItemCounts, loadAllItems());
   alterShoppingDetails(shoppingDetails, loadPromotions());
   let str = generateReceipt(shoppingDetails);
   console.log(str);
 }
 
-//统计商品数量
-function calculateItem(tags){
-  const itemCount={};//包含barcode和count的对象
-  const calculateItemCount=[];
-  for(let i=0;i<tags.length;i++){
-	 //包含-的情况
-    if(tags[i].indexOf("-")>0){
-      let div=tags[i].split("-");//分割字符串为数组
-      if(itemCount.hasOwnProperty(div[0])){
-        itemCount[div[0]]=itemCount[div[0]]+parseFloat(div[1]);
-      }
-	  else{
-        itemCount[div[0]]=parseFloat(div[1]);
+function bulidSplitBarcodeAndAmount(tags){
+	 const splitBarcodeAndAmounts=[];//[{barcode:xx,amount:xx},{}]
+	 for(let i=0;i<tags.length;i++){
+		 let tempObject ={};
+		 if(tags[i].indexOf("-")>0){
+			 let div=tags[i].split("-");
+			 tempObject.barcode = div[0];
+			 tempObject.count = parseFloat(div[1]);
+		 }
+		 else{
+			 tempObject.barcode = tags[i];
+			 tempObject.count = 1;
+		 }
+		 splitBarcodeAndAmounts.push(tempObject); 
+	 }
+	  //console.info(splitBarcodeAndAmounts);
+	  return splitBarcodeAndAmounts;
+}
+
+function bulidCalculateItemsCount(splitBarcodeAndAmounts){
+  let calculateItemsCounts = [];
+  for(let splitBarcodeAndAmount of splitBarcodeAndAmounts) {
+    let existBarcode = null;
+    for(let calculateItemsCount of calculateItemsCounts) {
+      if(calculateItemsCount.barcode === splitBarcodeAndAmount.barcode) {
+        existBarcode = calculateItemsCount;
       }
     }
-	//不包含-的情况
-	else{
-      if(itemCount.hasOwnProperty(tags[i])){
-        itemCount[tags[i]]=itemCount[tags[i]]+1;
-      }
-	  else{
-        itemCount[tags[i]]=1;
-     }
+    if(existBarcode != null) {
+      existBarcode.count += splitBarcodeAndAmount.count;
+    }else {
+      calculateItemsCounts.push({ ...splitBarcodeAndAmount });
     }
   }
-  for(let n in itemCount) {
-    calculateItemCount.push({"barcode": n, "count": itemCount[n]});
-  }
-  //console.log(calculateItemCount);
-  return calculateItemCount;
+  return calculateItemsCounts;
 }
 
 //购物详细信息包括小计
@@ -48,7 +54,7 @@ function addShoppingDetails(calculateItemCount, allItems) {
       if(item.barcode === allItems[i].barcode){
         shoppingDetails.push({
           "barcode":allItems[i].barcode,
-		  "name":allItems[i].name,
+          "name":allItems[i].name,
           "count":item.count,
           "price":allItems[i].price,
           "unit":allItems[i].unit,
@@ -57,7 +63,7 @@ function addShoppingDetails(calculateItemCount, allItems) {
       }
     }
   }
-  //console.log(shoppingDetails);
+  console.log(shoppingDetails);
   return shoppingDetails;
 }
 
